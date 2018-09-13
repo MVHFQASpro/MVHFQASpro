@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jerry.dao.PatientPersonalInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.jerry.model.PatientPersonalInfo" >
+    <constructor >
+      <idArg column="PatientID" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="Name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="Gender" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="Age" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Telephone" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="IDCard" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="SSCard" jdbcType="CHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PatientID, Name, Gender, Age, Telephone, IDCard, SSCard
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from PatientPersonalInfo
+  </select>
+  <select id="selectPersonCount" resultType="java.lang.Integer" parameterType="java.lang.String" >
+    select count(*)
+    from PatientPersonalInfo
+  </select>
+    <select id="selectPersonCountByGender" resultType="java.lang.Integer" parameterType="java.lang.String" >
+        select count(*)
+        from PatientPersonalInfo
+        WHERE Gender = #{_parameter}
+    </select>
+  <select id="selectPersonCountByAge" resultType="java.lang.Integer">
+    select count(*)
+    from PatientPersonalInfo
+    WHERE Age &gt; #{0}
+    AND Age &lt;= #{1}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from PatientPersonalInfo
+    where PatientID = #{patientid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from PatientPersonalInfo
+    where PatientID = #{patientid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.jerry.model.PatientPersonalInfo" >
+    insert into PatientPersonalInfo (PatientID, Name, Gender, 
+      Age, Telephone, IDCard, 
+      SSCard)
+    values (#{patientid,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
+      #{age,jdbcType=INTEGER}, #{telephone,jdbcType=VARCHAR}, #{idcard,jdbcType=CHAR}, 
+      #{sscard,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jerry.model.PatientPersonalInfo" >
+    insert into PatientPersonalInfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="patientid != null" >
+        PatientID,
+      </if>
+      <if test="name != null" >
+        Name,
+      </if>
+      <if test="gender != null" >
+        Gender,
+      </if>
+      <if test="age != null" >
+        Age,
+      </if>
+      <if test="telephone != null" >
+        Telephone,
+      </if>
+      <if test="idcard != null" >
+        IDCard,
+      </if>
+      <if test="sscard != null" >
+        SSCard,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="patientid != null" >
+        #{patientid,jdbcType=CHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        #{idcard,jdbcType=CHAR},
+      </if>
+      <if test="sscard != null" >
+        #{sscard,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jerry.model.PatientPersonalInfo" >
+    update PatientPersonalInfo
+    <set >
+      <if test="name != null" >
+        Name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        Gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        Age = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="telephone != null" >
+        Telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        IDCard = #{idcard,jdbcType=CHAR},
+      </if>
+      <if test="sscard != null" >
+        SSCard = #{sscard,jdbcType=CHAR},
+      </if>
+    </set>
+    where PatientID = #{patientid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jerry.model.PatientPersonalInfo" >
+    update PatientPersonalInfo
+    set Name = #{name,jdbcType=VARCHAR},
+      Gender = #{gender,jdbcType=VARCHAR},
+      Age = #{age,jdbcType=INTEGER},
+      Telephone = #{telephone,jdbcType=VARCHAR},
+      IDCard = #{idcard,jdbcType=CHAR},
+      SSCard = #{sscard,jdbcType=CHAR}
+    where PatientID = #{patientid,jdbcType=CHAR}
+  </update>
+</mapper>
+
+<!-- =========================================================================================================================== -->

@@ -1,0 +1,911 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+
+    <title>MVHand | mvhand.top</title>
+
+    <link rel="stylesheet" type="text/css" href="css/reset.css"  media="screen" />
+
+    <link rel="stylesheet" type="text/css" href="css/text.css"  media="screen" />
+
+    <link rel="stylesheet" type="text/css" href="css/grid.css"  media="screen" />
+
+    <link rel="stylesheet" type="text/css" href="css/layout.css"  media="screen" />
+
+    <link rel="stylesheet" type="text/css" href="css/nav.css"  media="screen" />
+
+    <!--[if IE 6]><link rel="stylesheet" type="text/css" href="css/ie6.css"  media="screen" /><![endif]-->
+
+    <!--[if IE 7]><link rel="stylesheet" type="text/css" href="css/ie.css"  media="screen" /><![endif]-->
+
+    <!-- BEGIN: load jquery -->
+
+    <script src="js/jquery-1.6.4.min.js"  type="text/javascript"></script>
+
+    <script type="text/javascript" src="js/jquery-ui/jquery.ui.core.min.js" ></script>
+
+    <script src="js/jquery-ui/jquery.ui.widget.min.js"  type="text/javascript"></script>
+
+    <script src="js/jquery-ui/jquery.ui.accordion.min.js"  type="text/javascript"></script>
+
+    <script src="js/jquery-ui/jquery.effects.core.min.js"  type="text/javascript"></script>
+
+    <script src="js/jquery-ui/jquery.effects.slide.min.js"  type="text/javascript"></script>
+
+    <!-- END: load jquery -->
+
+    <!-- BEGIN: load jqplot -->
+
+    <link rel="stylesheet" type="text/css" href="css/jquery.jqplot.min.css"  />
+
+    <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="js/jqPlot/excanvas.min.js" ></script><![endif]-->
+
+    <script language="javascript" type="text/javascript" src="js/jqPlot/jquery.jqplot.min.js" ></script>
+
+    <script type="text/javascript" src="js/jqPlot/plugins/jqplot.canvasTextRenderer.min.js" ></script>
+
+    <script type="text/javascript" src="js/jqPlot/plugins/jqplot.canvasAxisLabelRenderer.min.js" ></script>
+
+    <script language="javascript" type="text/javascript" src="js/jqPlot/plugins/jqplot.barRenderer.min.js" ></script>
+
+    <script language="javascript" type="text/javascript" src="js/jqPlot/plugins/jqplot.pieRenderer.min.js" ></script>
+
+    <script language="javascript" type="text/javascript" src="js/jqPlot/plugins/jqplot.categoryAxisRenderer.min.js" ></script>
+
+    <script language="javascript" type="text/javascript" src="js/jqPlot/plugins/jqplot.highlighter.min.js" ></script>
+
+    <script language="javascript" type="text/javascript" src="js/jqPlot/plugins/jqplot.pointLabels.min.js" ></script>
+
+    <script type="text/javascript" src="js/jqPlot/plugins/jqplot.donutRenderer.min.js" ></script>
+
+    <script type="text/javascript" src="js/jqPlot/plugins/jqplot.bubbleRenderer.min.js" ></script>
+
+    <!-- END: load jquery -->
+
+    <!--<script type="text/javascript" src="js/table/table.js" ></script>-->
+
+    <!--<script type="text/javascript" src="js/myjs/mytable.js" ></script>-->
+
+    <script src="js/setup.js"  type="text/javascript"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            setupLeftMenu();
+
+            setSidebarHeight();
+
+            var value = 0;
+
+//-----------------------------------------------------------------------------------
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/getPersonCountByGender",
+                //async: false,
+                data: {},
+                success: function (msg) {
+                    //console.log(msg);
+                    var str = "";
+                    var data = msg;
+                    value = data.Male;
+                    console.log("getPersonCountByGender:");
+                    console.log(data);
+                    var s1 = [['男性',data.Male], ['女性',data.Female]];
+                    var total = 0;
+                    $(s1).map(function(){total += this[1];})
+                    var arrLabels = $.makeArray($(s1).map(function(){return this[1] + " " + Math.round(this[1]/total * 100) + "%";}));
+                    var plot1 = $.jqplot('PersonCountByGenderChart', [s1], {
+                        seriesColors: [ "#359bc5", "#10c55e"],
+                        title:{
+                            text:'表中数据分别为 [病例（单位：例） 所占百分比]',
+                            show:true,
+                            fontFamily:'微软雅黑',
+                            fontSize:14,
+                            textAlign:'left',
+                            textColor:'#515151',
+                            escapeHtml:false        // 是否转义HTML字符，值为false时，能够在text属性中使用HTML代码
+                        },
+                        seriesDefaults: {
+                            renderer:$.jqplot.DonutRenderer,
+                            rendererOptions:{
+                                sliceMargin: 3,
+                                startAngle: -90,
+                                showDataLabels: true,
+                                dataLabels:arrLabels,
+                                dataLabelsFormatString:'%s',
+                                dataLabelThreshold:0,
+                                dataLabelPositionFactor:0.6,
+                            }
+                        },
+                        grid:{
+                            drawBorder:false,
+                            shadow:false,
+                            background:'transparent'
+                        },
+                        legend:{
+                            show:true,
+                            placement: 'outsideGrid'
+                        }
+                    });
+                },
+                error: function () {
+                    //alert("error:gPCBG")
+                    console.log("error:gPCBG");
+                }
+            });
+//-----------------------------------------------------------------------------------
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/getPersonCountByAge",
+                //async: false,
+                data: {},
+                success: function (msg) {
+                    //console.log(msg);
+                    var str = "";
+                    var data = msg;
+                    console.log("getPersonCountByAge:");
+                    console.log(data);
+                    var s1 = [['年龄<=40',data.b00t40],['40<年龄<=50',data.b40t50],['50<年龄<=60',data.b50t60]
+                        ,['60<年龄<=70',data.b60t70],['年龄>70',data.b70t1000]];
+                    var total = 0;
+                    $(s1).map(function(){total += this[1];})
+                    var arrLabels = $.makeArray($(s1).map(function(){return this[1] + " " + Math.round(this[1]/total * 100) + "%";}));
+
+                    var plot2 = $.jqplot('PersonCountByAgeChart', [s1], {
+                        seriesColors: [ "#359bc5", "#10c55e", "#c5a34c", "#c57f6e", "#b965c5"],
+                        title:{
+                            text:'表中数据分别为 [病例（单位：例） 所占百分比]',
+                            show:true,
+                            fontFamily:'微软雅黑',
+                            fontSize:14,
+                            textAlign:'left',
+                            textColor:'#515151',
+                            escapeHtml:false        // 是否转义HTML字符，值为false时，能够在text属性中使用HTML代码
+                        },
+                        seriesDefaults: {
+                            renderer:$.jqplot.DonutRenderer,
+                            rendererOptions:{
+                                sliceMargin: 3,
+                                startAngle: -90,
+                                showDataLabels: true,
+                                dataLabels:arrLabels,
+                                dataLabelsFormatString:'%s',
+                                dataLabelThreshold:0,
+                                dataLabelPositionFactor:0.6,
+                            }
+                        },
+                        grid:{
+                            drawBorder:false,
+                            shadow:false,
+                            background:'transparent'
+                        },
+                        legend:{
+                            show:true,
+                            placement: 'outsideGrid'
+                        }
+                    });
+                },
+                error: function () {
+                    //alert("error:gPCBA");
+                    console.log("error:gPCBA");
+                }
+            });
+//-----------------------------------------------------------------------------------
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/getPersonCountByUnhealthyhand",
+                //async: false,
+                data: {},
+                success: function (msg) {
+                    //console.log(msg);
+                    var str = "";
+                    var data = msg;
+                    value = data.Male;
+                    console.log("getPersonCountByUnhealthyhand:");
+                    console.log(data);
+                    var s1 = [['右手',data.UHandRight], ['左手',data.UHandLeft]];
+                    var total = 0;
+                    $(s1).map(function(){total += this[1];})
+                    var arrLabels = $.makeArray($(s1).map(function(){return this[1] + " " + Math.round(this[1]/total * 100) + "%";}));
+                    var plot3 = $.jqplot('PersonCountByUnhealthyhandChart', [s1], {
+                        seriesColors: [ "#c57f6e", "#c5a34c"],
+                        title:{
+                            text:'表中数据分别为 [病例（单位：例） 所占百分比]',
+                            show:true,
+                            fontFamily:'微软雅黑',
+                            fontSize:14,
+                            textAlign:'left',
+                            textColor:'#515151',
+                            escapeHtml:false        // 是否转义HTML字符，值为false时，能够在text属性中使用HTML代码
+                        },
+                        seriesDefaults: {
+                            renderer:$.jqplot.DonutRenderer,
+                            rendererOptions:{
+                                sliceMargin: 3,
+                                startAngle: -90,
+                                showDataLabels: true,
+                                dataLabels:arrLabels,
+                                dataLabelsFormatString:'%s',
+                                dataLabelThreshold:0,
+                                dataLabelPositionFactor:0.6,
+                            }
+                        },
+                        grid:{
+                            drawBorder:false,
+                            shadow:false,
+                            background:'transparent'
+                        },
+                        legend:{
+                            show:true,
+                            placement: 'outsideGrid'
+                        }
+                    });
+                },
+                error: function () {
+                    //alert("error:gPCBUh")
+                    console.log("error:gPCBUh");
+                }
+            });
+//-----------------------------------------------------------------------------------
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/getPersonCountByStrokeType",
+                //async: false,
+                data: {},
+                success: function (msg) {
+                    //console.log(msg);
+                    var data = msg;
+                    console.log("getPersonCountByStrokeType:");
+                    console.log(data);
+                    var s1 = [['脑梗死',data.NGS], ['脑出血',data.NCX]];
+                    var total = 0;
+                    $(s1).map(function(){total += this[1];})
+                    var arrLabels = $.makeArray($(s1).map(function(){return this[1] + " " + Math.round(this[1]/total * 100) + "%";}));
+                    var plot4 = $.jqplot('PersonCountByStrokeTypeChart', [s1], {
+                        seriesColors: [ "#61c534", "#9d87c5"],
+                        title:{
+                            text:'表中数据分别为 [病例（单位：例） 所占百分比]',
+                            show:true,
+                            fontFamily:'微软雅黑',
+                            fontSize:14,
+                            textAlign:'left',
+                            textColor:'#515151',
+                            escapeHtml:false        // 是否转义HTML字符，值为false时，能够在text属性中使用HTML代码
+                        },
+                        seriesDefaults: {
+                            renderer:$.jqplot.DonutRenderer,
+                            rendererOptions:{
+                                sliceMargin: 3,
+                                startAngle: -90,
+                                showDataLabels: true,
+                                dataLabels:arrLabels,
+                                dataLabelsFormatString:'%s',
+                                dataLabelThreshold:0,
+                                dataLabelPositionFactor:0.6,
+                            }
+                        },
+                        grid:{
+                            drawBorder:false,
+                            shadow:false,
+                            background:'transparent'
+                        },
+                        legend:{
+                            show:true,
+                            placement: 'outsideGrid'
+                        }
+                    });
+                },
+                error: function () {
+                    //alert("error:gPCBST")
+                    console.log("error:gPCBST");
+                }
+            });
+//-----------------------------------------------------------------------------------
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/getPersonCountByDiseaseCourse",
+                //async: false,
+                data: {},
+                success: function (msg) {
+                    //console.log(msg);
+                    var data = msg;
+                    console.log("getPersonCountByDiseaseCourse:");
+                    console.log(data);
+                    var s1 = [['急性期（0-2周）',data.J0t2W], ['急性期（0-3个月）',data.J0t3M]
+                        , ['亚急性期（3-6个月）',data.YJ3t6M], ['恢复期（2周-6个月）',data.H2Wt6M]
+                        , ['慢性期（6个月以上）',data.M6tXM]];
+                    var total = 0;
+                    $(s1).map(function(){total += this[1];})
+                    var arrLabels = $.makeArray($(s1).map(function(){return this[1] + " " + Math.round(this[1]/total * 100) + "%";}));
+                    var plot5 = $.jqplot('PersonCountByDiseaseCourseChart', [s1], {
+                        seriesColors: [ "#359bc5", "#10c55e", "#c5a34c", "#c57f6e", "#b965c5"],
+                        title:{
+                            text:'表中数据分别为 [病例（单位：例） 所占百分比]',
+                            show:true,
+                            fontFamily:'微软雅黑',
+                            fontSize:14,
+                            textAlign:'left',
+                            textColor:'#515151',
+                            escapeHtml:false        // 是否转义HTML字符，值为false时，能够在text属性中使用HTML代码
+                        },
+                        seriesDefaults: {
+                            renderer:$.jqplot.DonutRenderer,
+                            rendererOptions:{
+                                sliceMargin: 3,
+                                startAngle: -90,
+                                showDataLabels: true,
+                                dataLabels:arrLabels,
+                                dataLabelsFormatString:'%s',
+                                dataLabelThreshold:0,
+                                dataLabelPositionFactor:0.6,
+                            }
+                        },
+                        grid:{
+                            drawBorder:false,
+                            shadow:false,
+                            background:'transparent'
+                        },
+                        legend:{
+                            show:true,
+                            placement: 'outsideGrid'
+                        }
+                    });
+                },
+                error: function () {
+                    //alert("error:gPCBST")
+                    console.log("error:gPCBDC");
+                }
+            });
+//-----------------------------------------------------------------------------------
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/getPersonCountByDiseaseCount",
+                //async: false,
+                data: {},
+                success: function (msg) {
+                    //console.log(msg);
+                    var data = msg;
+                    console.log("getPersonCountByDiseaseCount:");
+                    console.log(data);
+                    var s1 = [['1次',data.DC0t1], ['2次及以上',data.DC1tX]];
+                    var total = 0;
+                    $(s1).map(function(){total += this[1];})
+                    var arrLabels = $.makeArray($(s1).map(function(){return this[1] + " " + Math.round(this[1]/total * 100) + "%";}));
+                    var plot6 = $.jqplot('PersonCountByDiseaseCountChart', [s1], {
+                        seriesColors: [ "#4cc561", "#c574ba", "#c5a34c", "#c57f6e", "#b965c5"],
+                        title:{
+                            text:'表中数据分别为 [病例（单位：例） 所占百分比]',
+                            show:true,
+                            fontFamily:'微软雅黑',
+                            fontSize:14,
+                            textAlign:'left',
+                            textColor:'#515151',
+                            escapeHtml:false        // 是否转义HTML字符，值为false时，能够在text属性中使用HTML代码
+                        },
+                        seriesDefaults: {
+                            renderer:$.jqplot.DonutRenderer,
+                            rendererOptions:{
+                                sliceMargin: 3,
+                                startAngle: -90,
+                                showDataLabels: true,
+                                dataLabels:arrLabels,
+                                dataLabelsFormatString:'%s',
+                                dataLabelThreshold:0,
+                                dataLabelPositionFactor:0.6,
+                            }
+                        },
+                        grid:{
+                            drawBorder:false,
+                            shadow:false,
+                            background:'transparent'
+                        },
+                        legend:{
+                            show:true,
+                            placement: 'outsideGrid'
+                        }
+                    });
+                },
+                error: function () {
+                    //alert("error:gPCBST")
+                    console.log("error:gPCBDC1");
+                }
+            });
+//-----------------------------------------------------------------------------------
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/getUseingTimesByDate",
+                //async: false,
+                data: {},
+                success: function (msg) {
+                    var data = msg;
+                    console.log("getUseingTimesByDate:");
+                    console.log(data);
+                    var s1 = [
+                        [data.nowDateLastXM.name,data.nowDateLastXM.value],
+                        [data.nowDateLast8M.name,data.nowDateLast8M.value],
+                        [data.nowDateLast7M.name,data.nowDateLast7M.value],
+                        [data.nowDateLast6M.name,data.nowDateLast6M.value],
+                        [data.nowDateLast5M.name,data.nowDateLast5M.value],
+                        [data.nowDateLast4M.name,data.nowDateLast4M.value],
+                        [data.nowDateLast3M.name,data.nowDateLast3M.value],
+                        [data.nowDateLast2M.name,data.nowDateLast2M.value],
+                        [data.nowDateLast1M.name,data.nowDateLast1M.value],
+                        [data.nowDate.name,data.nowDate.value]
+                    ];
+                    var s2 =
+                        [
+                            [parseInt(data.nowDateLastXM.value),
+                            parseInt(data.nowDateLast8M.value),
+                            parseInt(data.nowDateLast7M.value),
+                            parseInt(data.nowDateLast6M.value),
+                            parseInt(data.nowDateLast5M.value),
+                            parseInt(data.nowDateLast4M.value),
+                            parseInt(data.nowDateLast3M.value),
+                            parseInt(data.nowDateLast2M.value),
+                            parseInt(data.nowDateLast1M.value),
+                            parseInt(data.nowDate.value)]
+                        ];
+                    var s3 = [
+                        [data.nowDateLastXM.name,data.nowDateLastXM.value,data.nowDateLastXM.value],
+                        [data.nowDateLast8M.name,data.nowDateLast8M.value,data.nowDateLast8M.value],
+                        [data.nowDateLast7M.name,data.nowDateLast7M.value,data.nowDateLast7M.value],
+                        [data.nowDateLast6M.name,data.nowDateLast6M.value,data.nowDateLast6M.value],
+                        [data.nowDateLast5M.name,data.nowDateLast5M.value,data.nowDateLast5M.value],
+                        [data.nowDateLast4M.name,data.nowDateLast4M.value,data.nowDateLast4M.value],
+                        [data.nowDateLast3M.name,data.nowDateLast3M.value,data.nowDateLast3M.value],
+                        [data.nowDateLast2M.name,data.nowDateLast2M.value,data.nowDateLast2M.value],
+                        [data.nowDateLast1M.name,data.nowDateLast1M.value,data.nowDateLast1M.value],
+                        [data.nowDate.name,data.nowDate.value,data.nowDate.value]
+                    ];
+                    var s4 =
+                        [
+                            [data.nowDateLastXM.value,
+                             data.nowDateLast8M.value,
+                             data.nowDateLast7M.value,
+                             data.nowDateLast6M.value,
+                             data.nowDateLast5M.value,
+                             data.nowDateLast4M.value,
+                             data.nowDateLast3M.value,
+                             data.nowDateLast2M.value,
+                             data.nowDateLast1M.value,
+                             data.nowDate.value]
+                        ];
+                    var s5 =
+                            [
+                                data.nowDateLastXM.value,
+                                data.nowDateLast8M.value,
+                                data.nowDateLast7M.value,
+                                data.nowDateLast6M.value,
+                                data.nowDateLast5M.value,
+                                data.nowDateLast4M.value,
+                                data.nowDateLast3M.value,
+                                data.nowDateLast2M.value,
+                                data.nowDateLast1M.value,
+                                data.nowDate.value
+                            ];
+
+                    console.log(s1);
+                    var plot7= $.jqplot('UsingTimesByDateChart',[s3], {
+                        title : '使用次数',
+                        cursor:{
+                            show:true,//是否显示提示信息
+                            zoom:false,//是否启用变焦，鼠标左键选中图表去拖动可放大图标
+                            looseZoom:true//扩展变焦范围，提供更全面的刻度值信息，目前仅对有时间轴和线性轴的图表有效
+                        },
+                        seriesDefaults: {
+                            dragable: {
+                                color: undefined, // 当拖动数据点是，拖动线与拖动数据点颜色
+                                constrainTo: 'none', //设置拖动的的范围: 'x'（只能在横向上拖动）,
+                                xaxis: 'xaxis', // either 'xaxis' or 'x2axis'.
+                                yaxis: 'yaxis', // either 'yaxis' or 'y2axis'.
+
+                            },
+                        },
+                        series:[
+                            {pointLabels:{
+                                show: true,
+                                labels:s5,
+                            }}],
+                        axesDefaults: {
+
+                        },
+                        axes : {
+                            //  x轴
+                            xaxis : { //设置X轴
+                                label : '时间',
+                                renderer : $.jqplot.CategoryAxisRenderer,
+                                tickOptions : {
+                                    angle : 30,
+                                    showLabel: true,
+                                    formatString: '%S'
+                                }
+                            },
+                            //第一个y轴
+                            yaxis : {
+                                label:'人次',
+                                min:-50,
+                                tickOptions : {
+                                    formatString : "%d"
+                                },
+                                rendererOptions : {
+                                    forceTickAt0 : true
+                                }
+                            }
+                        },
+                        highlighter: {
+                            // 是否高亮显示
+                            show: true,
+                            sizeAdjust: 7.5,
+                            showTooltip: false,
+                            //useAxesFormatters: true,
+                            //tooltipFormatString: '%s',
+                        },
+                    });
+                },
+                error: function () {
+                    console.log("error:gPIBD");
+                }
+            });
+//-----------------------------------------------------------------------------------
+            //console.log("Out:"+ value);
+            //drawDonutChart('donuts-chart');
+        });
+
+    </script>
+
+ <script type="text/javascript">
+
+     $(window).load(function () {
+
+         $('#demo-side-bar').removeAttr('style');
+
+     });
+
+</script>
+
+<style type="text/css">
+
+#demo-side-bar{left:90%!important;display:block!important;}
+
+#branding .floatright{margin-right:130px!important;}
+
+</style>
+
+	<!--Dynamically creates ads markup-->
+
+    <div class="container_12">
+
+        <div class="grid_12 header-repeat">
+
+            <div id="branding">
+
+                <div class="floatleft">
+
+                    <img src="img/logo.png"  alt="Logo" /></div>
+
+                <div class="floatright">
+
+                    <div class="floatleft">
+
+                        <img src="img/img-profile.jpg"  alt="Profile Pic" /></div>
+
+                    <div class="floatleft marginleft10">
+
+                        <ul class="inline-ul floatleft">
+
+                            <li>Hello Admin</li>
+
+                            <li><a href="#">Config</a></li>
+
+                            <li><a href="#">Logout</a></li>
+
+                        </ul>
+
+                        <br />
+
+                        <span class="small grey">Last Login: 3 hours ago</span>
+
+                    </div>
+
+                </div>
+
+                <div class="clear">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="clear">
+
+        </div>
+
+        <div class="grid_12">
+
+            <ul class="nav main">
+
+                <li class="ic-dashboard"><a href="javascript:" ><span>主页</span></li>
+
+                <!--<li class="ic-form-style"><a href="javascript:"><span>控件</span></a>-->
+
+                    <!--<ul>-->
+
+                        <!--<li><a href="form-controls.html" >Forms</a> </li>-->
+
+                        <!--<li><a href="buttons.html" >Buttons</a> </li>-->
+
+                        <!--<li><a href="form-controls.html" >Full Page Example</a> </li>-->
+
+                        <!--<li><a href="table.html" >Page with Sidebar Example</a> </li>-->
+
+                    <!--</ul>-->
+
+                <!--</li>-->
+
+				<!--<li class="ic-typography"><a href="typography.html" ><span>排版</span></a></li>-->
+
+                <!--<li class="ic-charts"><a href="charts.html" ><span>图表</span></a></li>-->
+
+                <li class="ic-grid-tables"><a href="table.html" ><span>数据</span></a></li>
+                <li class="ic-grid-tables"><a href="statistics.html" ><span>统计</span></a></li>
+                <li class="ic-gallery dd"><a href="image-gallery.html"><span>图片</span></a></li>
+                <!--<li class="ic-gallery dd"><a href="javascript:"><span>图片</span></a>-->
+
+               		 <!--<ul>-->
+
+                        <!--<li><a href="image-gallery.html" >Pretty Photo</a> </li>-->
+
+                        <!--<li><a href="gallery-with-filter.html" >Gallery with Filter</a> </li>-->
+
+                    <!--</ul>-->
+
+                <!--</li>-->
+
+                <!--<li class="ic-notifications"><a href="notifications.html" ><span>消息</span></a></li>-->
+
+
+
+            </ul>
+
+        </div>
+
+        <div class="clear">
+
+        </div>
+
+        <div class="grid_2">
+
+            <div class="box sidemenu">
+
+                <div class="block" id="section-menu">
+
+                    <ul class="section menu">
+
+                        <!--<li><a class="menuitem">患者信息</a>-->
+
+                            <!--<ul class="submenu">-->
+
+                                <!--<li><a href="table_PatientPersonalInfo.html">基本信息</a> </li>-->
+
+                                <!--<li><a href="table_PatientDiseaseInfo.html">病理信息</a> </li>-->
+
+                                <!--&lt;!&ndash;<li><a class="active">Submenu 3</a> </li>&ndash;&gt;-->
+
+                                <!--&lt;!&ndash;<li><a>Submenu 4</a> </li>&ndash;&gt;-->
+
+                                <!--&lt;!&ndash;<li><a>Submenu 5</a> </li>&ndash;&gt;-->
+
+                            <!--</ul>-->
+
+                        <!--</li>-->
+
+                        <!--<li><a class="menuitem">健手建模</a>-->
+
+                            <!--<ul class="submenu">-->
+
+                                <!--<li><a href="table_HHA_R.html">建模数据</a> </li>-->
+
+                                <!--&lt;!&ndash;<li><a>Submenu 2</a> </li>&ndash;&gt;-->
+
+                                <!--&lt;!&ndash;<li><a>Submenu 3</a> </li>&ndash;&gt;-->
+
+                                <!--&lt;!&ndash;<li><a>Submenu 4</a> </li>&ndash;&gt;-->
+
+                                <!--&lt;!&ndash;<li><a>Submenu 5</a> </li>&ndash;&gt;-->
+
+                            <!--</ul>-->
+
+                        <!--</li>-->
+
+                        <!--<li><a class="menuitem">患手评估</a>-->
+
+                            <!--<ul class="submenu">-->
+
+                                <!--<li><a href="table_UHHA_R.html">评估数据</a> </li>-->
+
+                                <!--&lt;!&ndash;<li><a>Submenu 2</a> </li>&ndash;&gt;-->
+
+                                <!--&lt;!&ndash;<li><a>Submenu 3</a> </li>&ndash;&gt;-->
+
+                                <!--&lt;!&ndash;<li><a>Submenu 4</a> </li>&ndash;&gt;-->
+
+                                <!--&lt;!&ndash;<li><a>Submenu 5</a> </li>&ndash;&gt;-->
+
+                            <!--</ul>-->
+
+                        <!--</li>-->
+
+                        <li><a class="menuitem">数据统计</a>
+
+                            <!--<ul class="submenu">-->
+
+                                <!--<li><a>Submenu 1</a> </li>-->
+
+                                <!--<li><a>Submenu 2</a> </li>-->
+
+                                <!--<li><a>Submenu 3</a> </li>-->
+
+                                <!--<li><a>Submenu 4</a> </li>-->
+
+                                <!--<li><a>Submenu 5</a> </li>-->
+
+                            <!--</ul>-->
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="grid_5">
+
+            <div class="box round">
+
+                <h2> 病例性别环形图</h2>
+
+                <div id="PersonCountByGenderChart">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="grid_5">
+
+            <div class="box round">
+
+                <h2> 病例年龄统计</h2>
+
+                <div id="PersonCountByAgeChart">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="grid_5">
+
+            <div class="box round">
+
+                <h2> 患侧统计</h2>
+
+                <div id="PersonCountByUnhealthyhandChart">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="grid_5">
+
+            <div class="box round">
+
+                <h2> 卒中类型统计</h2>
+
+                <div id="PersonCountByStrokeTypeChart">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="grid_5">
+
+            <div class="box round">
+
+                <h2> 病程统计</h2>
+
+                <div id="PersonCountByDiseaseCourseChart">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="grid_5">
+
+            <div class="box round">
+
+                <h2> 发病次数统计</h2>
+
+                <div id="PersonCountByDiseaseCountChart">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="grid_10">
+
+            <div class="box round">
+
+                <h2> 系统使用次数统计</h2>
+
+                <div id="UsingTimesByDateChart">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="clear">
+
+        </div>
+
+    </div>
+
+    <div class="clear">
+
+    </div>
+
+    <div id="site_info">
+
+        <p>
+
+            Copyright <a href="#">mvhand.top</a>. All Rights Reserved.
+
+        </p>
+
+    </div>
+
+  	<div id="demo-side-bar">
+
+   
+   </div>
+
+    </div>
+
+    <!--wrapper end-->
+
+	<!--Dynamically creates analytics markup-->
+
+	 
+</body>
+
+</html>
+

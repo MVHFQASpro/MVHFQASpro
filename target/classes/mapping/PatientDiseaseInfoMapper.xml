@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jerry.dao.PatientDiseaseInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.jerry.model.PatientDiseaseInfo" >
+    <constructor >
+      <idArg column="PatientID" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="HealthyHand" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="UnhealthyHand" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="Handedness" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="StrokeType" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="StrokeArea" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="DiseaseCourse" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="BrunnstormUpperLimb" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="BrunnstormHand" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MTBendElbow" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MTBendWrist" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MTBendFinger" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MTStretchElbow" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MTStretchWrist" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MTStretchFinger" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MTStretchFront" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MTStretchBehind" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="FuglMeyer" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MSS" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="WMFT" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="AccidentDate" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="CountOfDisease" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.jerry.model.PatientDiseaseInfo" >
+    <constructor >
+      <idArg column="PatientID" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="HealthyHand" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="UnhealthyHand" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="Handedness" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="StrokeType" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="StrokeArea" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="DiseaseCourse" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="BrunnstormUpperLimb" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="BrunnstormHand" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MTBendElbow" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MTBendWrist" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MTBendFinger" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MTStretchElbow" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MTStretchWrist" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MTStretchFinger" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MTStretchFront" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MTStretchBehind" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="FuglMeyer" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MSS" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="WMFT" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="AccidentDate" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="CountOfDisease" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Overview" jdbcType="CLOB" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PatientID, HealthyHand, UnhealthyHand, Handedness, StrokeType, StrokeArea, DiseaseCourse, 
+    BrunnstormUpperLimb, BrunnstormHand, MTBendElbow, MTBendWrist, MTBendFinger, MTStretchElbow, 
+    MTStretchWrist, MTStretchFinger, MTStretchFront, MTStretchBehind, FuglMeyer, MSS, 
+    WMFT, AccidentDate, CountOfDisease
+  </sql>
+  <sql id="Blob_Column_List" >
+    Overview
+  </sql>
+  <select id="selectAll" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select *
+    from PatientDiseaseInfo
+  </select>
+  <select id="selectPersonCountByUnhealthyhand" resultType="java.lang.Integer" parameterType="java.lang.String" >
+    select count(*)
+    from PatientDiseaseInfo
+    WHERE UnhealthyHand = #{0}
+  </select>
+  <select id="selectPersonCountByStrokeType" resultType="java.lang.Integer" parameterType="java.lang.String" >
+    select count(*)
+    from PatientDiseaseInfo
+    WHERE StrokeType = #{0}
+  </select>
+  <select id="selectPersonCountByDiseaseCourse" resultType="java.lang.Integer" parameterType="java.lang.String" >
+    select count(*)
+    from PatientDiseaseInfo
+    WHERE DiseaseCourse = #{0}
+  </select>
+  <select id="selectPersonCountByDiseaseCount" resultType="java.lang.Integer" >
+    select count(*)
+    from PatientDiseaseInfo
+    WHERE CountOfDisease &gt; #{0}
+    and  CountOfDisease &lt;= #{1}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from PatientDiseaseInfo
+    where PatientID = #{patientid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from PatientDiseaseInfo
+    where PatientID = #{patientid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.jerry.model.PatientDiseaseInfo" >
+    insert into PatientDiseaseInfo (PatientID, HealthyHand, UnhealthyHand, 
+      Handedness, StrokeType, StrokeArea, 
+      DiseaseCourse, BrunnstormUpperLimb, BrunnstormHand, 
+      MTBendElbow, MTBendWrist, MTBendFinger, 
+      MTStretchElbow, MTStretchWrist, MTStretchFinger, 
+      MTStretchFront, MTStretchBehind, FuglMeyer, 
+      MSS, WMFT, AccidentDate, 
+      CountOfDisease, Overview)
+    values (#{patientid,jdbcType=CHAR}, #{healthyhand,jdbcType=CHAR}, #{unhealthyhand,jdbcType=CHAR}, 
+      #{handedness,jdbcType=CHAR}, #{stroketype,jdbcType=VARCHAR}, #{strokearea,jdbcType=VARCHAR}, 
+      #{diseasecourse,jdbcType=VARCHAR}, #{brunnstormupperlimb,jdbcType=VARCHAR}, #{brunnstormhand,jdbcType=VARCHAR}, 
+      #{mtbendelbow,jdbcType=VARCHAR}, #{mtbendwrist,jdbcType=VARCHAR}, #{mtbendfinger,jdbcType=VARCHAR}, 
+      #{mtstretchelbow,jdbcType=VARCHAR}, #{mtstretchwrist,jdbcType=VARCHAR}, #{mtstretchfinger,jdbcType=VARCHAR}, 
+      #{mtstretchfront,jdbcType=VARCHAR}, #{mtstretchbehind,jdbcType=VARCHAR}, #{fuglmeyer,jdbcType=VARCHAR}, 
+      #{mss,jdbcType=VARCHAR}, #{wmft,jdbcType=VARCHAR}, #{accidentdate,jdbcType=TIMESTAMP}, 
+      #{countofdisease,jdbcType=INTEGER}, #{overview,jdbcType=CLOB})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jerry.model.PatientDiseaseInfo" >
+    insert into PatientDiseaseInfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="patientid != null" >
+        PatientID,
+      </if>
+      <if test="healthyhand != null" >
+        HealthyHand,
+      </if>
+      <if test="unhealthyhand != null" >
+        UnhealthyHand,
+      </if>
+      <if test="handedness != null" >
+        Handedness,
+      </if>
+      <if test="stroketype != null" >
+        StrokeType,
+      </if>
+      <if test="strokearea != null" >
+        StrokeArea,
+      </if>
+      <if test="diseasecourse != null" >
+        DiseaseCourse,
+      </if>
+      <if test="brunnstormupperlimb != null" >
+        BrunnstormUpperLimb,
+      </if>
+      <if test="brunnstormhand != null" >
+        BrunnstormHand,
+      </if>
+      <if test="mtbendelbow != null" >
+        MTBendElbow,
+      </if>
+      <if test="mtbendwrist != null" >
+        MTBendWrist,
+      </if>
+      <if test="mtbendfinger != null" >
+        MTBendFinger,
+      </if>
+      <if test="mtstretchelbow != null" >
+        MTStretchElbow,
+      </if>
+      <if test="mtstretchwrist != null" >
+        MTStretchWrist,
+      </if>
+      <if test="mtstretchfinger != null" >
+        MTStretchFinger,
+      </if>
+      <if test="mtstretchfront != null" >
+        MTStretchFront,
+      </if>
+      <if test="mtstretchbehind != null" >
+        MTStretchBehind,
+      </if>
+      <if test="fuglmeyer != null" >
+        FuglMeyer,
+      </if>
+      <if test="mss != null" >
+        MSS,
+      </if>
+      <if test="wmft != null" >
+        WMFT,
+      </if>
+      <if test="accidentdate != null" >
+        AccidentDate,
+      </if>
+      <if test="countofdisease != null" >
+        CountOfDisease,
+      </if>
+      <if test="overview != null" >
+        Overview,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="patientid != null" >
+        #{patientid,jdbcType=CHAR},
+      </if>
+      <if test="healthyhand != null" >
+        #{healthyhand,jdbcType=CHAR},
+      </if>
+      <if test="unhealthyhand != null" >
+        #{unhealthyhand,jdbcType=CHAR},
+      </if>
+      <if test="handedness != null" >
+        #{handedness,jdbcType=CHAR},
+      </if>
+      <if test="stroketype != null" >
+        #{stroketype,jdbcType=VARCHAR},
+      </if>
+      <if test="strokearea != null" >
+        #{strokearea,jdbcType=VARCHAR},
+      </if>
+      <if test="diseasecourse != null" >
+        #{diseasecourse,jdbcType=VARCHAR},
+      </if>
+      <if test="brunnstormupperlimb != null" >
+        #{brunnstormupperlimb,jdbcType=VARCHAR},
+      </if>
+      <if test="brunnstormhand != null" >
+        #{brunnstormhand,jdbcType=VARCHAR},
+      </if>
+      <if test="mtbendelbow != null" >
+        #{mtbendelbow,jdbcType=VARCHAR},
+      </if>
+      <if test="mtbendwrist != null" >
+        #{mtbendwrist,jdbcType=VARCHAR},
+      </if>
+      <if test="mtbendfinger != null" >
+        #{mtbendfinger,jdbcType=VARCHAR},
+      </if>
+      <if test="mtstretchelbow != null" >
+        #{mtstretchelbow,jdbcType=VARCHAR},
+      </if>
+      <if test="mtstretchwrist != null" >
+        #{mtstretchwrist,jdbcType=VARCHAR},
+      </if>
+      <if test="mtstretchfinger != null" >
+        #{mtstretchfinger,jdbcType=VARCHAR},
+      </if>
+      <if test="mtstretchfront != null" >
+        #{mtstretchfront,jdbcType=VARCHAR},
+      </if>
+      <if test="mtstretchbehind != null" >
+        #{mtstretchbehind,jdbcType=VARCHAR},
+      </if>
+      <if test="fuglmeyer != null" >
+        #{fuglmeyer,jdbcType=VARCHAR},
+      </if>
+      <if test="mss != null" >
+        #{mss,jdbcType=VARCHAR},
+      </if>
+      <if test="wmft != null" >
+        #{wmft,jdbcType=VARCHAR},
+      </if>
+      <if test="accidentdate != null" >
+        #{accidentdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="countofdisease != null" >
+        #{countofdisease,jdbcType=INTEGER},
+      </if>
+      <if test="overview != null" >
+        #{overview,jdbcType=CLOB},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jerry.model.PatientDiseaseInfo" >
+    update PatientDiseaseInfo
+    <set >
+      <if test="healthyhand != null" >
+        HealthyHand = #{healthyhand,jdbcType=CHAR},
+      </if>
+      <if test="unhealthyhand != null" >
+        UnhealthyHand = #{unhealthyhand,jdbcType=CHAR},
+      </if>
+      <if test="handedness != null" >
+        Handedness = #{handedness,jdbcType=CHAR},
+      </if>
+      <if test="stroketype != null" >
+        StrokeType = #{stroketype,jdbcType=VARCHAR},
+      </if>
+      <if test="strokearea != null" >
+        StrokeArea = #{strokearea,jdbcType=VARCHAR},
+      </if>
+      <if test="diseasecourse != null" >
+        DiseaseCourse = #{diseasecourse,jdbcType=VARCHAR},
+      </if>
+      <if test="brunnstormupperlimb != null" >
+        BrunnstormUpperLimb = #{brunnstormupperlimb,jdbcType=VARCHAR},
+      </if>
+      <if test="brunnstormhand != null" >
+        BrunnstormHand = #{brunnstormhand,jdbcType=VARCHAR},
+      </if>
+      <if test="mtbendelbow != null" >
+        MTBendElbow = #{mtbendelbow,jdbcType=VARCHAR},
+      </if>
+      <if test="mtbendwrist != null" >
+        MTBendWrist = #{mtbendwrist,jdbcType=VARCHAR},
+      </if>
+      <if test="mtbendfinger != null" >
+        MTBendFinger = #{mtbendfinger,jdbcType=VARCHAR},
+      </if>
+      <if test="mtstretchelbow != null" >
+        MTStretchElbow = #{mtstretchelbow,jdbcType=VARCHAR},
+      </if>
+      <if test="mtstretchwrist != null" >
+        MTStretchWrist = #{mtstretchwrist,jdbcType=VARCHAR},
+      </if>
+      <if test="mtstretchfinger != null" >
+        MTStretchFinger = #{mtstretchfinger,jdbcType=VARCHAR},
+      </if>
+      <if test="mtstretchfront != null" >
+        MTStretchFront = #{mtstretchfront,jdbcType=VARCHAR},
+      </if>
+      <if test="mtstretchbehind != null" >
+        MTStretchBehind = #{mtstretchbehind,jdbcType=VARCHAR},
+      </if>
+      <if test="fuglmeyer != null" >
+        FuglMeyer = #{fuglmeyer,jdbcType=VARCHAR},
+      </if>
+      <if test="mss != null" >
+        MSS = #{mss,jdbcType=VARCHAR},
+      </if>
+      <if test="wmft != null" >
+        WMFT = #{wmft,jdbcType=VARCHAR},
+      </if>
+      <if test="accidentdate != null" >
+        AccidentDate = #{accidentdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="countofdisease != null" >
+        CountOfDisease = #{countofdisease,jdbcType=INTEGER},
+      </if>
+      <if test="overview != null" >
+        Overview = #{overview,jdbcType=CLOB},
+      </if>
+    </set>
+    where PatientID = #{patientid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jerry.model.PatientDiseaseInfo" >
+    update PatientDiseaseInfo
+    set HealthyHand = #{healthyhand,jdbcType=CHAR},
+      UnhealthyHand = #{unhealthyhand,jdbcType=CHAR},
+      Handedness = #{handedness,jdbcType=CHAR},
+      StrokeType = #{stroketype,jdbcType=VARCHAR},
+      StrokeArea = #{strokearea,jdbcType=VARCHAR},
+      DiseaseCourse = #{diseasecourse,jdbcType=VARCHAR},
+      BrunnstormUpperLimb = #{brunnstormupperlimb,jdbcType=VARCHAR},
+      BrunnstormHand = #{brunnstormhand,jdbcType=VARCHAR},
+      MTBendElbow = #{mtbendelbow,jdbcType=VARCHAR},
+      MTBendWrist = #{mtbendwrist,jdbcType=VARCHAR},
+      MTBendFinger = #{mtbendfinger,jdbcType=VARCHAR},
+      MTStretchElbow = #{mtstretchelbow,jdbcType=VARCHAR},
+      MTStretchWrist = #{mtstretchwrist,jdbcType=VARCHAR},
+      MTStretchFinger = #{mtstretchfinger,jdbcType=VARCHAR},
+      MTStretchFront = #{mtstretchfront,jdbcType=VARCHAR},
+      MTStretchBehind = #{mtstretchbehind,jdbcType=VARCHAR},
+      FuglMeyer = #{fuglmeyer,jdbcType=VARCHAR},
+      MSS = #{mss,jdbcType=VARCHAR},
+      WMFT = #{wmft,jdbcType=VARCHAR},
+      AccidentDate = #{accidentdate,jdbcType=TIMESTAMP},
+      CountOfDisease = #{countofdisease,jdbcType=INTEGER},
+      Overview = #{overview,jdbcType=CLOB}
+    where PatientID = #{patientid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jerry.model.PatientDiseaseInfo" >
+    update PatientDiseaseInfo
+    set HealthyHand = #{healthyhand,jdbcType=CHAR},
+      UnhealthyHand = #{unhealthyhand,jdbcType=CHAR},
+      Handedness = #{handedness,jdbcType=CHAR},
+      StrokeType = #{stroketype,jdbcType=VARCHAR},
+      StrokeArea = #{strokearea,jdbcType=VARCHAR},
+      DiseaseCourse = #{diseasecourse,jdbcType=VARCHAR},
+      BrunnstormUpperLimb = #{brunnstormupperlimb,jdbcType=VARCHAR},
+      BrunnstormHand = #{brunnstormhand,jdbcType=VARCHAR},
+      MTBendElbow = #{mtbendelbow,jdbcType=VARCHAR},
+      MTBendWrist = #{mtbendwrist,jdbcType=VARCHAR},
+      MTBendFinger = #{mtbendfinger,jdbcType=VARCHAR},
+      MTStretchElbow = #{mtstretchelbow,jdbcType=VARCHAR},
+      MTStretchWrist = #{mtstretchwrist,jdbcType=VARCHAR},
+      MTStretchFinger = #{mtstretchfinger,jdbcType=VARCHAR},
+      MTStretchFront = #{mtstretchfront,jdbcType=VARCHAR},
+      MTStretchBehind = #{mtstretchbehind,jdbcType=VARCHAR},
+      FuglMeyer = #{fuglmeyer,jdbcType=VARCHAR},
+      MSS = #{mss,jdbcType=VARCHAR},
+      WMFT = #{wmft,jdbcType=VARCHAR},
+      AccidentDate = #{accidentdate,jdbcType=TIMESTAMP},
+      CountOfDisease = #{countofdisease,jdbcType=INTEGER}
+    where PatientID = #{patientid,jdbcType=CHAR}
+  </update>
+</mapper>

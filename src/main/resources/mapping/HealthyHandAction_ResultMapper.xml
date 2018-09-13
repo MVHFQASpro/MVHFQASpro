@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jerry.dao.HealthyHandAction_ResultMapper" >
+  <resultMap id="BaseResultMap" type="com.jerry.model.HealthyHandAction_Result" >
+    <constructor >
+      <idArg column="ActionOperationID" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="PatientID" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="ActionID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="CaseID" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="ActionTimes" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="TokenValue1_Res" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="TokenValue2_Res" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="TokenValue3_Res" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="TokenValue4_Res" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="TokenValue5_Res" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="H_VideoPath" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="H_Res_CreateTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="Column1" jdbcType="CHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ActionOperationID, PatientID, ActionID, CaseID, ActionTimes, TokenValue1_Res, TokenValue2_Res, 
+    TokenValue3_Res, TokenValue4_Res, TokenValue5_Res, H_VideoPath, H_Res_CreateTime, 
+    Column1
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select *
+    from HealthyHandAction_Result
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from HealthyHandAction_Result
+    where ActionOperationID = #{actionoperationid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from HealthyHandAction_Result
+    where ActionOperationID = #{actionoperationid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.jerry.model.HealthyHandAction_Result" >
+    insert into HealthyHandAction_Result (ActionOperationID, PatientID, ActionID, 
+      CaseID, ActionTimes, TokenValue1_Res, 
+      TokenValue2_Res, TokenValue3_Res, TokenValue4_Res, 
+      TokenValue5_Res, H_VideoPath, H_Res_CreateTime, 
+      Column1)
+    values (#{actionoperationid,jdbcType=CHAR}, #{patientid,jdbcType=CHAR}, #{actionid,jdbcType=INTEGER}, 
+      #{caseid,jdbcType=CHAR}, #{actiontimes,jdbcType=INTEGER}, #{tokenvalue1Res,jdbcType=VARCHAR}, 
+      #{tokenvalue2Res,jdbcType=VARCHAR}, #{tokenvalue3Res,jdbcType=VARCHAR}, #{tokenvalue4Res,jdbcType=VARCHAR}, 
+      #{tokenvalue5Res,jdbcType=VARCHAR}, #{hVideopath,jdbcType=VARCHAR}, #{hResCreatetime,jdbcType=TIMESTAMP}, 
+      #{column1,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jerry.model.HealthyHandAction_Result" >
+    insert into HealthyHandAction_Result
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="actionoperationid != null" >
+        ActionOperationID,
+      </if>
+      <if test="patientid != null" >
+        PatientID,
+      </if>
+      <if test="actionid != null" >
+        ActionID,
+      </if>
+      <if test="caseid != null" >
+        CaseID,
+      </if>
+      <if test="actiontimes != null" >
+        ActionTimes,
+      </if>
+      <if test="tokenvalue1Res != null" >
+        TokenValue1_Res,
+      </if>
+      <if test="tokenvalue2Res != null" >
+        TokenValue2_Res,
+      </if>
+      <if test="tokenvalue3Res != null" >
+        TokenValue3_Res,
+      </if>
+      <if test="tokenvalue4Res != null" >
+        TokenValue4_Res,
+      </if>
+      <if test="tokenvalue5Res != null" >
+        TokenValue5_Res,
+      </if>
+      <if test="hVideopath != null" >
+        H_VideoPath,
+      </if>
+      <if test="hResCreatetime != null" >
+        H_Res_CreateTime,
+      </if>
+      <if test="column1 != null" >
+        Column1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="actionoperationid != null" >
+        #{actionoperationid,jdbcType=CHAR},
+      </if>
+      <if test="patientid != null" >
+        #{patientid,jdbcType=CHAR},
+      </if>
+      <if test="actionid != null" >
+        #{actionid,jdbcType=INTEGER},
+      </if>
+      <if test="caseid != null" >
+        #{caseid,jdbcType=CHAR},
+      </if>
+      <if test="actiontimes != null" >
+        #{actiontimes,jdbcType=INTEGER},
+      </if>
+      <if test="tokenvalue1Res != null" >
+        #{tokenvalue1Res,jdbcType=VARCHAR},
+      </if>
+      <if test="tokenvalue2Res != null" >
+        #{tokenvalue2Res,jdbcType=VARCHAR},
+      </if>
+      <if test="tokenvalue3Res != null" >
+        #{tokenvalue3Res,jdbcType=VARCHAR},
+      </if>
+      <if test="tokenvalue4Res != null" >
+        #{tokenvalue4Res,jdbcType=VARCHAR},
+      </if>
+      <if test="tokenvalue5Res != null" >
+        #{tokenvalue5Res,jdbcType=VARCHAR},
+      </if>
+      <if test="hVideopath != null" >
+        #{hVideopath,jdbcType=VARCHAR},
+      </if>
+      <if test="hResCreatetime != null" >
+        #{hResCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="column1 != null" >
+        #{column1,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jerry.model.HealthyHandAction_Result" >
+    update HealthyHandAction_Result
+    <set >
+      <if test="patientid != null" >
+        PatientID = #{patientid,jdbcType=CHAR},
+      </if>
+      <if test="actionid != null" >
+        ActionID = #{actionid,jdbcType=INTEGER},
+      </if>
+      <if test="caseid != null" >
+        CaseID = #{caseid,jdbcType=CHAR},
+      </if>
+      <if test="actiontimes != null" >
+        ActionTimes = #{actiontimes,jdbcType=INTEGER},
+      </if>
+      <if test="tokenvalue1Res != null" >
+        TokenValue1_Res = #{tokenvalue1Res,jdbcType=VARCHAR},
+      </if>
+      <if test="tokenvalue2Res != null" >
+        TokenValue2_Res = #{tokenvalue2Res,jdbcType=VARCHAR},
+      </if>
+      <if test="tokenvalue3Res != null" >
+        TokenValue3_Res = #{tokenvalue3Res,jdbcType=VARCHAR},
+      </if>
+      <if test="tokenvalue4Res != null" >
+        TokenValue4_Res = #{tokenvalue4Res,jdbcType=VARCHAR},
+      </if>
+      <if test="tokenvalue5Res != null" >
+        TokenValue5_Res = #{tokenvalue5Res,jdbcType=VARCHAR},
+      </if>
+      <if test="hVideopath != null" >
+        H_VideoPath = #{hVideopath,jdbcType=VARCHAR},
+      </if>
+      <if test="hResCreatetime != null" >
+        H_Res_CreateTime = #{hResCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="column1 != null" >
+        Column1 = #{column1,jdbcType=CHAR},
+      </if>
+    </set>
+    where ActionOperationID = #{actionoperationid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jerry.model.HealthyHandAction_Result" >
+    update HealthyHandAction_Result
+    set PatientID = #{patientid,jdbcType=CHAR},
+      ActionID = #{actionid,jdbcType=INTEGER},
+      CaseID = #{caseid,jdbcType=CHAR},
+      ActionTimes = #{actiontimes,jdbcType=INTEGER},
+      TokenValue1_Res = #{tokenvalue1Res,jdbcType=VARCHAR},
+      TokenValue2_Res = #{tokenvalue2Res,jdbcType=VARCHAR},
+      TokenValue3_Res = #{tokenvalue3Res,jdbcType=VARCHAR},
+      TokenValue4_Res = #{tokenvalue4Res,jdbcType=VARCHAR},
+      TokenValue5_Res = #{tokenvalue5Res,jdbcType=VARCHAR},
+      H_VideoPath = #{hVideopath,jdbcType=VARCHAR},
+      H_Res_CreateTime = #{hResCreatetime,jdbcType=TIMESTAMP},
+      Column1 = #{column1,jdbcType=CHAR}
+    where ActionOperationID = #{actionoperationid,jdbcType=CHAR}
+  </update>
+</mapper>

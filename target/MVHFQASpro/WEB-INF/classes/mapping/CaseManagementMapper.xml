@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jerry.dao.CaseManagementMapper" >
+  <resultMap id="BaseResultMap" type="com.jerry.model.CaseManagement" >
+    <constructor >
+      <idArg column="CaseID" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="PatientID" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="LoginDate" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="Times" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Username" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MachineID" jdbcType="CHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CaseID, PatientID, LoginDate, Times, Username, MachineID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaseManagement
+    where CaseID = #{caseid,jdbcType=CHAR}
+  </select>
+  <select id="selectUsingTimesByDate" resultType="java.lang.Integer">
+    select count(*)
+    from CaseManagement
+    WHERE LoginDate
+    BETWEEN #{0} AND #{1}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from CaseManagement
+    where CaseID = #{caseid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.jerry.model.CaseManagement" >
+    insert into CaseManagement (CaseID, PatientID, LoginDate, 
+      Times, Username, MachineID
+      )
+    values (#{caseid,jdbcType=CHAR}, #{patientid,jdbcType=CHAR}, #{logindate,jdbcType=TIMESTAMP}, 
+      #{times,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{machineid,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jerry.model.CaseManagement" >
+    insert into CaseManagement
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caseid != null" >
+        CaseID,
+      </if>
+      <if test="patientid != null" >
+        PatientID,
+      </if>
+      <if test="logindate != null" >
+        LoginDate,
+      </if>
+      <if test="times != null" >
+        Times,
+      </if>
+      <if test="username != null" >
+        Username,
+      </if>
+      <if test="machineid != null" >
+        MachineID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caseid != null" >
+        #{caseid,jdbcType=CHAR},
+      </if>
+      <if test="patientid != null" >
+        #{patientid,jdbcType=CHAR},
+      </if>
+      <if test="logindate != null" >
+        #{logindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="times != null" >
+        #{times,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="machineid != null" >
+        #{machineid,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jerry.model.CaseManagement" >
+    update CaseManagement
+    <set >
+      <if test="patientid != null" >
+        PatientID = #{patientid,jdbcType=CHAR},
+      </if>
+      <if test="logindate != null" >
+        LoginDate = #{logindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="times != null" >
+        Times = #{times,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        Username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="machineid != null" >
+        MachineID = #{machineid,jdbcType=CHAR},
+      </if>
+    </set>
+    where CaseID = #{caseid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jerry.model.CaseManagement" >
+    update CaseManagement
+    set PatientID = #{patientid,jdbcType=CHAR},
+      LoginDate = #{logindate,jdbcType=TIMESTAMP},
+      Times = #{times,jdbcType=INTEGER},
+      Username = #{username,jdbcType=VARCHAR},
+      MachineID = #{machineid,jdbcType=CHAR}
+    where CaseID = #{caseid,jdbcType=CHAR}
+  </update>
+</mapper>

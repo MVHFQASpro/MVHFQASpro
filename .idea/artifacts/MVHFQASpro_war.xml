@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="MVHFQASpro:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="MVHFQASpro.war">
+      <element id="artifact" artifact-name="MVHFQASpro:war exploded" />
+    </root>
+  </artifact>
+</component>
